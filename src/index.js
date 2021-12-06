@@ -6,14 +6,17 @@ import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import reducer, { initialState } from "./reducer";
 import { StateProvider } from "./StateProvider";
+import { SnackbarProvider } from 'notistack';
 
 ReactDOM.render(
   <React.StrictMode>
-    <StateProvider initialState={initialState} reducer={reducer}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-    </StateProvider>
+    <SnackbarProvider maxSnack={3}>
+      <StateProvider initialState={initialState} reducer={reducer}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </StateProvider>
+    </SnackbarProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

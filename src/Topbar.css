@@ -65,8 +65,14 @@
   }
   
   .topBusketCount {
-    margin-left: 10px;
-    margin-right: 10px;
+    height: 8px;
+    width: 8px;
+    padding:0px 5px 10px 5px;
+    border-radius: 50%;
+    color:black;
+    font-weight: bold;
+    margin: -12px 10px 0px -5px;
+    background-color: #f0c14b;
   }
 
   

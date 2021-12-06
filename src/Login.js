@@ -2,14 +2,38 @@ import React,{useState} from 'react';
 import './Login.css';
 import { Link, useHistory } from 'react-router-dom';
 import { auth } from './firebase';
+import { useSnackbar } from 'notistack';
+import Slide from '@material-ui/core/Slide';
+import CancelIcon from '@material-ui/icons/Cancel';
+import {Button} from '@material-ui/core';
 
 function Login() {
     const history = useHistory();
     const[email,setEmail] = useState("");
     const[password,setPassword] = useState("");
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const action = key => (
+        
+            <Button onClick={() => { closeSnackbar(key) }}>
+                <CancelIcon style={{color: "white"}}/>
+            </Button>
+        
+    );
+    const guestEmail = "myguest@gmail.com";
+    const guestPassword = "MYGUest1234";
 
     const signIn = (e)=>{
         e.preventDefault();
+        enqueueSnackbar('Logging In..', { 
+            variant: 'success',
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'right',
+            },
+            TransitionComponent: Slide,
+            autoHideDuration: 1000,
+            action
+        });
         auth.signInWithEmailAndPassword(email,password)
         .then((auth)=>{
             history.push("/")
@@ -17,6 +41,16 @@ function Login() {
     }
     const register = (e)=>{
         e.preventDefault();
+        enqueueSnackbar('Sign Up Processing..', { 
+            variant: 'success',
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'right',
+            },
+            TransitionComponent: Slide,
+            autoHideDuration: 1500,
+            action
+        });
         auth.createUserWithEmailAndPassword(email,password)
         .then((auth)=>{
             //on Successful creation firebase return auth object
@@ -24,6 +58,23 @@ function Login() {
             if(auth){
                 history.push("/");
             }
+        }).catch(error=>alert(error.message));
+    }
+    const guestSignIn = (e)=>{
+        e.preventDefault();
+        enqueueSnackbar('Logging In...', { 
+            variant: 'success',
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'right',
+            },
+            TransitionComponent: Slide,
+            autoHideDuration: 1500,
+            action
+        });
+        auth.signInWithEmailAndPassword(guestEmail,guestPassword)
+        .then((auth)=>{
+            history.push("/")
         }).catch(error=>alert(error.message));
     }
     return (
@@ -40,13 +91,10 @@ function Login() {
                     <h5>{"Password"}</h5>
                     <input type="password" value={password} onChange={e=>setPassword(e.target.value)}/>
 
-                    <button className="loginSignInButton" type="submit" onClick={signIn}>{"Sign In"}</button>
+                    <button className="loginSignInButton" type="submit" onClick={signIn} style={{cursor:"pointer"}}>{"Sign In"}</button>
                 </form>
-                <p>
-                    By signing-in you agree to the AMAZON FAKE CLONE Conditions of Use & Sale. Please
-                    see our Privacy Notice, our Cookies Notice and our Interest-Based Ads Notice.
-                </p>
-                <button className="LoginRegisterButton" onClick={register}>Create Your Amazon Account</button>
+                <button className="loginSignInButton" type="submit" onClick={guestSignIn} style={{cursor:"pointer"}}>{"Guest Log In"}</button>
+                <button className="LoginRegisterButton" onClick={register} style={{cursor:"pointer"}}>Create Your Amazon Account</button>
             </div>
         </div>
     )

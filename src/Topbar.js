@@ -2,6 +2,7 @@ import React from 'react';
 import './Topbar.css';
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Link } from 'react-router-dom';
 import { useStateValue } from './StateProvider';
 import { auth } from './firebase';
@@ -14,15 +15,18 @@ export default function Topbar() {
         }
     }
     return (
-        <div className="header">
-            <Link to="/">
-                <img src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="amazonlogo" className="toplogo" />
-            </Link>
+        <div className="header" style={{display:"flex"}}>
+            <div >
+                <Link to="/">
+                    <img src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="amazonlogo" className="toplogo" />
+                </Link>
+                
+            </div>
             <div className="search">
                 <input className="headerInput" />
                 <SearchIcon className="topsearch" />
-            </div>
-            <div className="headerNavbar">
+            </div> 
+            <div className="headerNavbar" style={{float:"right"}}>
                 {!user ?
                     <Link to={"/login"}>
                         <div className="navbarOption" onClick={handleAuthentication}>
@@ -43,14 +47,11 @@ export default function Topbar() {
                         <span className="secondnav">Order</span>
                     </div>
                 </Link>
-                <div className="navbarOption">
-                    <span className="firstnav">Your</span>
-                    <span className="secondnav">Prime</span>
-                </div>
                 <Link to="/checkout">
                     <div className="topBusketOption">
-                        <ShoppingBasketIcon />
+                        <ShoppingCartIcon size="lg"/>
                         <span className="secondnav topBusketCount">{basket?.length}</span>
+                    
                     </div>
                 </Link>
             </div>

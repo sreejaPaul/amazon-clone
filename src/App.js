@@ -11,6 +11,11 @@ import Topaddressbar from './Topaddressbar';
 import Payment from "./Payment";
 import Address from "./Address";
 import Orders from "./Orders";
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from "@stripe/react-stripe-js";
+
+
+const promise = loadStripe("pk_test_51JzBPMSBx40pS7qHQsQvwJRYjWmwRJTFPIdw1N08UD7SHYieZ0SKZZOiBRe1Wrgp1EMQovaWDNVDFiTV7kthh90p00KplsuQt3");
 
 
 function App() {
@@ -58,7 +63,9 @@ function App() {
       </Route>
       <Route path="/payment" exact>
         <Topbar />
-        <Payment />
+        <Elements stripe={promise}>
+          <Payment />
+        </Elements>
       </Route>
       <Route path="/orders" exact>
         <Topbar />

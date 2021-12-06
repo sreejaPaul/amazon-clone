@@ -1,5 +1,6 @@
 export const initialState = {
     basket: [],
+    filteredBasket: [],
     user: null,
     address: null,
 };
@@ -14,6 +15,11 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 basket: [...state.basket, action.item],
+            };
+        case 'FILTER_BASKET':
+            return{
+                ...state,
+                filteredBasket: action.item,
             };
         case 'EMPTY_BASKET':
             return {
@@ -31,6 +37,19 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 basket: newBasket
+            };
+        case 'REMOVE_FULL_ITEM':
+            const filterBasket = state.basket.filter((item)=>item.id !== action.id);
+            const filterArr = state.filteredBasket.filter((item)=>item.id !== action.id);
+            filterArr.sort((a, b) => {
+                return a.id - b.id;
+            });
+            console.log(filterArr)
+            console.log(action.id)
+            return{
+                ...state,
+                basket: filterBasket,
+                filteredBasket: filterArr
             };
         case 'SET_USER':
             return {
